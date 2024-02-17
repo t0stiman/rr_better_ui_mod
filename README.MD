@@ -16,3 +16,9 @@ All of these tweaks can be toggled from the mod settings menu (ctrl-F10).
 ## Support me
 
 If you like my mods, please consider [buying me a coffee](https://ko-fi.com/tostiman). Thanks!
+
+## Screenshots
+
+![reverser](screenshots/reverser.jpg)
+
+![consumables](screenshots/consumables.jpg)
