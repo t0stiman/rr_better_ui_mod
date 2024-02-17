@@ -1,0 +1,10 @@
+{
+	"Id": "better_ui_mod",
+	"Version": "0.0.1",
+	"DisplayName": "Better UI mod",
+	"Author": "Tostiman",
+	"EntryMethod": "better_ui_mod.Main.Load",
+	"AssemblyName": "better_ui_mod.dll",
+	"HomePage": "https://github.com/t0stiman/rr_better_ui_mod",
+	"Repository": "https://raw.githubusercontent.com/t0stiman/rr_better_ui_mod/master/repository.json"
+}
