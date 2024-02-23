@@ -46,16 +46,15 @@ public class IndustryContentHoverable_Patch
 				var coalQuantity = storage.QuantityInStorage(load);
 				var coalPercent = Mathf.RoundToInt(coalQuantity / coalCapacity * 100);
 
-				var coalText = "T Coal";
-				__result = __result.Replace(coalText, $"{coalText} ({coalPercent}%)");
+				// the symbol of tonne is a small t, not capitol T
+				__result = __result.Replace("T Coal", $"t coal ({coalPercent}%)");
 			}
 			else if (load.id == Names.DIESEL_ID && dieselCapacity > 0.1)
 			{
 				var dieselQuantity = storage.QuantityInStorage(load);
 				var dieselPercent = Mathf.RoundToInt(dieselQuantity / dieselCapacity * 100);
 
-				var dieselText = "gal Diesel Fuel";
-				__result = __result.Replace(dieselText, $"{dieselText} ({dieselPercent}%)");
+				__result = __result.Replace("gal Diesel Fuel", $"gal diesel ({dieselPercent}%)");
 			}
 		}
 	}

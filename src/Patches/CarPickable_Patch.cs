@@ -19,17 +19,32 @@ public class CarPickable_Patch
 		{
 			return;
 		}
-		
-		var coalLoad = CarPrototypeLibrary.instance.LoadForId(Names.COAL_ID);
-		var coalInfo = __instance.car.QuantityCapacityOfLoad(coalLoad);
-		var coalPercent = Mathf.RoundToInt(coalInfo.quantity / coalInfo.capacity * 100);
-		
-		__result = __result.Replace("T Coal, ", $"T Coal ({coalPercent}%)\n");
-		
-		var waterLoad = CarPrototypeLibrary.instance.LoadForId(Names.WATER_ID);
-		var waterInfo = __instance.car.QuantityCapacityOfLoad(waterLoad);
-		var waterPercent = Mathf.RoundToInt(waterInfo.quantity / waterInfo.capacity * 100);
-		
-		__result = __result.Replace("gal Water", $"gal Water ({waterPercent}%)");
+
+		{
+			var coalLoad = CarPrototypeLibrary.instance.LoadForId(Names.COAL_ID);
+			var coalInfo = __instance.car.QuantityCapacityOfLoad(coalLoad);
+			var coalPercent = Mathf.RoundToInt(coalInfo.quantity / coalInfo.capacity * 100);
+			
+			// the symbol of tonne is a small t, not capitol T!
+			__result = __result.Replace("T Coal", $" t coal ({coalPercent}%)");
+		}
+
+		{
+			var waterLoad = CarPrototypeLibrary.instance.LoadForId(Names.WATER_ID);
+			var waterInfo = __instance.car.QuantityCapacityOfLoad(waterLoad);
+			var waterPercent = Mathf.RoundToInt(waterInfo.quantity / waterInfo.capacity * 100);
+
+			__result = __result.Replace("gal Water", $"gal water ({waterPercent}%)");
+		}
+
+		{
+			var dieselLoad = CarPrototypeLibrary.instance.LoadForId(Names.DIESEL_ID);
+			var dieselInfo = __instance.car.QuantityCapacityOfLoad(dieselLoad);
+			var dieselPercent = Mathf.RoundToInt(dieselInfo.quantity / dieselInfo.capacity * 100);
+			
+			__result = __result.Replace("gal Diesel Fuel", $"gal diesel ({dieselPercent}%)");
+		}
+
+		__result = __result.Replace(", ", "\n");
 	}
 }
