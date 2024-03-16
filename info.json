@@ -1,6 +1,6 @@
 {
 	"Id": "better_ui_mod",
-	"Version": "0.0.1",
+	"Version": "0.0.2",
 	"DisplayName": "Better UI mod",
 	"Author": "Tostiman",
 	"EntryMethod": "better_ui_mod.Main.Load",

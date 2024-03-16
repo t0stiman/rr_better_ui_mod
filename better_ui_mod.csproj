@@ -138,6 +138,7 @@
 
    <ItemGroup>
     <Publicize Include="Assembly-CSharp" />
+     <Publicize Include="KeyValue.Runtime" />
   </ItemGroup>
 
    <ItemGroup>

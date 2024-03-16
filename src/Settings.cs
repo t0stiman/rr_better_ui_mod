@@ -14,7 +14,7 @@ namespace better_ui_mod
 		public void Draw(UnityModManager.ModEntry modEntry)
 		{
 			ShowReverserPercentage = GUILayout.Toggle(ShowReverserPercentage, "Show reverser percentage instead of R/N/F");
-			ShowComsumablesPercent = GUILayout.Toggle(ShowComsumablesPercent, "Show fill percentage of coal, water and diesel on tenders, diesel locomotives, coaling towers and diesel refuel stands");
+			ShowComsumablesPercent = GUILayout.Toggle(ShowComsumablesPercent, "Show fill percentage on cargo wagons, tenders, diesel locomotives, coaling towers and diesel fuel stands");
 			ShowSteamProfileButton = GUILayout.Toggle(ShowSteamProfileButton,
 				"Show a button in the 'Employees' menu that takes you to the steam profile of the selected player");
 		}

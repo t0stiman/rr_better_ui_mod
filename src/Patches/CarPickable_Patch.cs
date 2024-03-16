@@ -1,5 +1,6 @@
 ﻿using HarmonyLib;
 using Model;
+using Model.Definition.Data;
 using Model.OpsNew;
 using RollingStock;
 using UnityEngine;
@@ -7,7 +8,8 @@ using UnityEngine;
 namespace better_ui_mod.Patches;
 
 /// <summary>
-/// percentage on tenders and diesel locomotives
+/// Show fill percentage and capacity on tenders, freight wagons and diesel locomotives
+/// Contains contributions by Kakashi Hatake and Percival Binglebottom
 /// </summary>
 [HarmonyPatch(typeof(CarPickable))]
 [HarmonyPatch(nameof(CarPickable.TooltipText))]
@@ -20,31 +22,44 @@ public class CarPickable_Patch
 			return;
 		}
 
+		for (var loadSlotNr = 0; loadSlotNr < __instance.car.Definition.LoadSlots.Count; loadSlotNr++)
 		{
-			var coalLoad = CarPrototypeLibrary.instance.LoadForId(Names.COAL_ID);
-			var coalInfo = __instance.car.QuantityCapacityOfLoad(coalLoad);
-			var coalPercent = Mathf.RoundToInt(coalInfo.quantity / coalInfo.capacity * 100);
+			var loadSlot = __instance.car.Definition.LoadSlots[loadSlotNr];
+			var loadInfo = __instance.car.GetLoadInfo(loadSlotNr);
+			if (!loadInfo.HasValue)
+			{
+				continue;
+			}
+
+			var load = CarPrototypeLibrary.instance.LoadForId(loadInfo.Value.LoadId);
+			var unit = Stuff.UnitToText(load.units);
 			
-			// the symbol of tonne is a small t, not capitol T!
-			__result = __result.Replace("T Coal", $" t coal ({coalPercent}%)");
-		}
-
-		{
-			var waterLoad = CarPrototypeLibrary.instance.LoadForId(Names.WATER_ID);
-			var waterInfo = __instance.car.QuantityCapacityOfLoad(waterLoad);
-			var waterPercent = Mathf.RoundToInt(waterInfo.quantity / waterInfo.capacity * 100);
-
-			__result = __result.Replace("gal Water", $"gal water ({waterPercent}%)");
-		}
-
-		{
-			var dieselLoad = CarPrototypeLibrary.instance.LoadForId(Names.DIESEL_ID);
-			var dieselInfo = __instance.car.QuantityCapacityOfLoad(dieselLoad);
-			var dieselPercent = Mathf.RoundToInt(dieselInfo.quantity / dieselInfo.capacity * 100);
+			var quantity = loadInfo.Value.Quantity;
+			string capacityText = default;
+			switch (load.units)
+			{
+				case LoadUnits.Pounds:
+					capacityText = Stuff.PoundsToUSShortTons(loadSlot.MaximumCapacity).ToString("0.0");
+					break;
+				case LoadUnits.Gallons:
+				case LoadUnits.Quantity:
+					capacityText = Mathf.RoundToInt(loadSlot.MaximumCapacity).ToString();
+					break;
+				default:
+					Main.Error($"{nameof(CarPickable_Patch)}: unreachable code reached");
+					break;
+			}
 			
-			__result = __result.Replace("gal Diesel Fuel", $"gal diesel ({dieselPercent}%)");
+			var fillPercentage = Mathf.RoundToInt(quantity / loadSlot.MaximumCapacity * 100);
+			
+			// max capacity is shown when car isn't empty or full
+			var thingy = fillPercentage != 0 && fillPercentage != 100 ? $" / {capacityText}" : "";
+
+			__result = __result.Replace($" {unit} {load.description}", $"{thingy} {unit} {load.description} ({fillPercentage}%)");
 		}
 
+		// each unit on a new line
+		__result = __result.Replace(" - ", "\n");
 		__result = __result.Replace(", ", "\n");
 	}
 }
