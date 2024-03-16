@@ -34,22 +34,8 @@ public class CarPickable_Patch
 			var load = CarPrototypeLibrary.instance.LoadForId(loadInfo.Value.LoadId);
 			var unit = Stuff.UnitToText(load.units);
 			
+			var capacityText = Stuff.GetCapacityText(load.units, loadSlot.MaximumCapacity);
 			var quantity = loadInfo.Value.Quantity;
-			string capacityText = default;
-			switch (load.units)
-			{
-				case LoadUnits.Pounds:
-					capacityText = Stuff.PoundsToUSShortTons(loadSlot.MaximumCapacity).ToString("0.0");
-					break;
-				case LoadUnits.Gallons:
-				case LoadUnits.Quantity:
-					capacityText = Mathf.RoundToInt(loadSlot.MaximumCapacity).ToString();
-					break;
-				default:
-					Main.Error($"{nameof(CarPickable_Patch)}: unreachable code reached");
-					break;
-			}
-			
 			var fillPercentage = Mathf.RoundToInt(quantity / loadSlot.MaximumCapacity * 100);
 			
 			// max capacity is shown when car isn't empty or full

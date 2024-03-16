@@ -1,5 +1,5 @@
 ﻿using HarmonyLib;
-using Model.OpsNew;
+using Model.Definition.Data;
 using RollingStock;
 using UnityEngine;
 
@@ -18,43 +18,29 @@ public class IndustryContentHoverable_Patch
 		{
 			return;
 		}
+		
+		var capacities = __instance.industry.GetCapacities();
 
-		float coalCapacity = 0;
-		float dieselCapacity = 0;
-		var contractMultiplier = __instance.industry.GetContractMultiplier();
-		
-		foreach (var unloader in __instance.industry.GetComponentsInChildren<IndustryUnloader>())
-		{
-			switch (unloader.load.id)
-			{
-				case Names.COAL_ID:
-					coalCapacity = unloader.maxStorage * contractMultiplier;
-					break;
-				case Names.DIESEL_ID:
-					dieselCapacity = unloader.maxStorage * contractMultiplier;
-					break; 
-			}
-		}
-		
 		var storage = __instance.industry.Storage;
-		
 		foreach (var load in storage.Loads())
 		{
-			if (load.id == Names.COAL_ID && coalCapacity > 0.1)
+			var unit = Stuff.UnitToText(load.units);
+			
+			var gotCapacity = capacities.TryGetValue(load.id, out float capacity);
+			if (!gotCapacity)
 			{
-				var coalQuantity = storage.QuantityInStorage(load);
-				var coalPercent = Mathf.RoundToInt(coalQuantity / coalCapacity * 100);
-
-				// the symbol of tonne is a small t, not capitol T
-				__result = __result.Replace("T Coal", $"t coal ({coalPercent}%)");
+				Main.Error($"{nameof(IndustryContentHoverable_Patch)}: can't get capacity for id {load.id}");
+				continue;
 			}
-			else if (load.id == Names.DIESEL_ID && dieselCapacity > 0.1)
-			{
-				var dieselQuantity = storage.QuantityInStorage(load);
-				var dieselPercent = Mathf.RoundToInt(dieselQuantity / dieselCapacity * 100);
-
-				__result = __result.Replace("gal Diesel Fuel", $"gal diesel ({dieselPercent}%)");
-			}
+			
+			var capacityText = Stuff.GetCapacityText(load.units, capacity);
+			var quantity = storage.QuantityInStorage(load);
+			var fillPercentage = Mathf.RoundToInt(quantity / capacity * 100);
+			
+			// max capacity is shown when the thing isn't empty or full
+			var thingy = fillPercentage != 0 && fillPercentage != 100 ? $" / {capacityText}" : "";
+			
+			__result = __result.Replace($" {unit} {load.description}", $"{thingy} {unit} {load.description} ({fillPercentage}%)");
 		}
 	}
 }

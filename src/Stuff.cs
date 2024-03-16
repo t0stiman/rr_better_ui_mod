@@ -1,4 +1,5 @@
 ﻿using Model.Definition.Data;
+using UnityEngine;
 
 namespace better_ui_mod;
 
@@ -23,5 +24,25 @@ public static class Stuff
 				Main.Warning($"{nameof(UnitToText)}: unit not implemented: {loadUnits.ToString()}");
 				return "";
 		}
+	}
+	
+	public static string GetCapacityText(LoadUnits units, float capacity)
+	{
+		string capacityText = default;
+		switch (units)
+		{
+			case LoadUnits.Pounds:
+				capacityText = Stuff.PoundsToUSShortTons(capacity).ToString("0.0");
+				break;
+			case LoadUnits.Gallons:
+			case LoadUnits.Quantity:
+				capacityText = Mathf.RoundToInt(capacity).ToString();
+				break;
+			default:
+				Main.Error($"{nameof(GetCapacityText)}: unreachable code reached");
+				break;
+		}
+
+		return capacityText;
 	}
 }
