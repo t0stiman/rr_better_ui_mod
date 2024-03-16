@@ -7,6 +7,7 @@ All of these tweaks can be toggled from the mod settings menu (ctrl-F10).
 
 - Show reverser percentage instead of R/N/F
 - Show fill percentage of coal, water and diesel on tenders, diesel locomotives, coaling towers and diesel refuel stands
+- Show a button in the 'Employees' menu that takes you to the steam profile of the selected player
 
 ## How to install
 
