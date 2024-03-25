@@ -123,6 +123,7 @@
     <Reference Include="KeyValue.Runtime" />
     <Reference Include="LeanTween" />
     <Reference Include="com.rlabrecque.steamworks.net" />
+    <Reference Include="Serilog" />
   </ItemGroup>
 
   <ItemGroup>

@@ -5,6 +5,9 @@ namespace better_ui_mod;
 
 public static class Stuff
 {
+	public const bool EXECUTE_ORIGINAL = true;
+	public const bool SKIP_ORIGINAL = false;
+	
 	public static float PoundsToUSShortTons(float pounds)
 	{
 		return pounds / 2000;

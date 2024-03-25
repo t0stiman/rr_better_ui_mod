@@ -29,42 +29,40 @@ public class EmployeesPanelBuilder_Patch
   {
     if (!Main.MySettings.ShowSteamProfileButton)
     {
-      return true;
+      return Stuff.EXECUTE_ORIGINAL;
     }
     
-    
-    List<UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>> first = new List<UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>>();
-    List<UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>> second1 = new List<UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>>();
-    List<UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>> second2 = new List<UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>>();
-    Dictionary<PlayerId, IPlayer> dictionary1 = playersManager.AllPlayers.ToDictionary(p => p.PlayerId, p => p);
-    Dictionary<string, PlayerId> dictionary2 = recordsManager.PlayerIdToRecordKey.ToDictionary(kv => kv.Value, kv => kv.Key);
-    foreach (KeyValuePair<string, PlayerRecord> playerRecord1 in recordsManager.PlayerRecords)
+    var playerId1 = PlayersManager.PlayerId;
+    var first = new List<UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>>();
+    var second1 = new List<UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>>();
+    var second2 = new List<UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>>();
+    var dictionary = playersManager.AllPlayers.ToDictionary(p => p.PlayerId, p => p);
+    foreach (var playerRecord1 in recordsManager.PlayerRecords)
     {
-      string str2 = playerRecord1.Key;
-      PlayerRecord record = playerRecord1.Value;
-      PlayerId key;
-      IPlayer player;
-      if (dictionary2.TryGetValue(str2, out key) && dictionary1.TryGetValue(key, out player))
+      var key = playerRecord1.Key;
+      var record = playerRecord1.Value;
+      var str = key.String;
+      if (dictionary.TryGetValue(key, out var player))
       {
-        EmployeesPanelBuilder.RecordsPanelItem recordsPanelItem = new EmployeesPanelBuilder.RecordsPanelItem(str2, player, record);
-        first.Add(new UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>(str2, recordsPanelItem, "Online", player.Name));
+        var recordsPanelItem = new EmployeesPanelBuilder.RecordsPanelItem(str, player, record);
+        first.Add(new UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>(str, recordsPanelItem, "Online", player.Name));
       }
       else if (record.AccessLevel == AccessLevel.Banned)
       {
-        EmployeesPanelBuilder.RecordsPanelItem recordsPanelItem = new EmployeesPanelBuilder.RecordsPanelItem(str2, null, record);
-        second2.Add(new UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>(str2, recordsPanelItem, "Banned", record.Name));
+        var recordsPanelItem = new EmployeesPanelBuilder.RecordsPanelItem(str, null, record);
+        second2.Add(new UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>(str, recordsPanelItem, "Banned", record.Name));
       }
       else
       {
-        EmployeesPanelBuilder.RecordsPanelItem recordsPanelItem = new EmployeesPanelBuilder.RecordsPanelItem(str2, null, record);
-        second1.Add(new UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>(str2, recordsPanelItem, "Offline", record.Name));
+        var recordsPanelItem = new EmployeesPanelBuilder.RecordsPanelItem(str, null, record);
+        second1.Add(new UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>(str, recordsPanelItem, "Offline", record.Name));
       }
     }
     first.Sort();
     second1.Sort();
     second2.Sort();
-    List<UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>> list = first.Concat(second1).Concat(second2).ToList();
-    builder.AddListDetail(list, selectedPlayerId, (builder5, item) =>
+    var list = first.Concat(second1).Concat(second2).ToList();
+    builder.AddListDetail<EmployeesPanelBuilder.RecordsPanelItem>((IEnumerable<UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>>) list, selectedPlayerId, (Action<UIPanelBuilder, EmployeesPanelBuilder.RecordsPanelItem>) ((builder5, item) =>
     {
       if (item == null)
       {
@@ -73,7 +71,7 @@ public class EmployeesPanelBuilder_Patch
       else
       {
         builder5.AddTitle(item.Name, null);
-        List<AccessLevel> accessLevelOptions = new List<AccessLevel>
+        var accessLevelOptions = new List<AccessLevel>
         {
           AccessLevel.Banned,
           AccessLevel.Passenger,
@@ -83,12 +81,12 @@ public class EmployeesPanelBuilder_Patch
           AccessLevel.Officer,
           AccessLevel.President
         };
-        IEnumerable<string> accessLevelStrings = accessLevelOptions.Select(al => al.ToString());
-        int index = accessLevelOptions.ToList().IndexOf(item.Record.AccessLevel);
+        var accessLevelStrings = accessLevelOptions.Select(al => al.ToString());
+        var index = accessLevelOptions.ToList().IndexOf(item.Record.AccessLevel);
         builder5.AddSection("About", builder6 =>
         {
           builder6.AddField("Last Connected", item.Record.LastConnected.ToLocalTime().ToString(CultureInfo.CurrentCulture));
-          RemovePlayerRecord removePlayerRecordMessage = new RemovePlayerRecord(item.RecordKey);
+          var removePlayerRecordMessage = new RemovePlayerRecord(item.RecordKey);
           if (!StateManager.CheckAuthorizedToSendMessage(removePlayerRecordMessage) || item.Player != null)
             return;
           builder6.AddField("", builder6.AddButton("Remove Record", () => StateManager.ApplyLocal(removePlayerRecordMessage)).RectTransform);
@@ -101,12 +99,12 @@ public class EmployeesPanelBuilder_Patch
           }
           else
           {
-            RectTransform control = builder7.AddDropdown(accessLevelStrings.ToList(), index, newIndex =>
+            var control = builder7.AddDropdown(accessLevelStrings.ToList(), index, newIndex =>
             {
-              AccessLevel accessLevel = accessLevelOptions[newIndex];
-              // Main.Debug<string, AccessLevel>("Request Set Access Level: {recordKey} {newAccessLevel}", item.RecordKey, accessLevel);
+              var accessLevel = accessLevelOptions[newIndex];
+              Serilog.Log.Debug<string, AccessLevel>("Request Set Access Level: {recordKey} {newAccessLevel}", item.RecordKey, accessLevel);
               StateManager.ApplyLocal(new RequestSetAccessLevel(item.RecordKey, accessLevel));
-              LeanTween.delayedCall(1f, new Action(builder7.Rebuild));
+              LeanTween.delayedCall(1f, builder7.Rebuild);
             });
             builder7.AddField("Role", control);
           }
@@ -119,7 +117,6 @@ public class EmployeesPanelBuilder_Patch
           builder8.AddField("Steam ID", steamID);
           builder8.AddField("Steam Name", EmployeesPanelBuilder.SteamNameForId(item.Record.SteamId));
           
-          
           builder8.AddButtonCompact("Steam Profile", () =>
           {
             SteamFriends.ActivateGameOverlayToWebPage(
@@ -127,38 +124,12 @@ public class EmployeesPanelBuilder_Patch
           });
         });
       }
-    });
+    }));
 
 
-    return false;
+    return Stuff.SKIP_ORIGINAL;
   }
 }
 
 
-// [HarmonyPatch(typeof(EmployeesPanelBuilder))]
-// [HarmonyPatch(nameof(EmployeesPanelBuilder.BuildRecordsPanel))]
-// static class aaaaap
-// {
-//   static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
-//   {
-//     try
-//     {
-//       var codeMatcher = new CodeMatcher(instructions)
-//         .MatchEndForward(
-//           new CodeMatch(OpCodes.Ldloc_S),
-//           new CodeMatch(OpCodes.Callvirt, AccessTools.Method(typeof(RenderTexture), nameof(RenderTexture.Release))))
-//         .ThrowIfNotMatch("Could not find CanvasDecalRenderer.Render")
-//         .SetInstruction(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(UnityEngine.RenderTexture), nameof(UnityEngine.RenderTexture.ReleaseTemporary), new[] { typeof(UnityEngine.RenderTexture) })));
-//       return codeMatcher.InstructionEnumeration();
-//     } catch (Exception e)
-//     {
-//       Loader.Log("CanvasDecalRenderer.Render not found");
-//       return instructions;
-//     }
-//   }
-// }
-
-
-
-
-
+  
