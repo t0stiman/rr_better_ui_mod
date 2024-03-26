@@ -8,6 +8,7 @@ namespace better_ui_mod
 		public bool ShowReverserPercentage = true;
 		public bool ShowComsumablesPercent = true;
 		public bool ShowSteamProfileButton = true;
+		public bool AlsoSearchLobbiesByName = true;
 
 		public void Setup(){}
 		
@@ -17,19 +18,7 @@ namespace better_ui_mod
 			ShowComsumablesPercent = GUILayout.Toggle(ShowComsumablesPercent, "Show fill percentage on cargo wagons, tenders, diesel locomotives, coaling towers and diesel fuel stands");
 			ShowSteamProfileButton = GUILayout.Toggle(ShowSteamProfileButton,
 				"Show a button in the 'Employees' menu that takes you to the steam profile of the selected player");
-		}
-
-		private void DrawFloatInput(ref string text, ref float number)
-		{
-			text = GUILayout.TextField(text);
-			if (float.TryParse(text, out float parsed))
-			{
-				number = parsed;
-			}
-			else
-			{
-				GUILayout.Label($"not a valid number");
-			}
+			AlsoSearchLobbiesByName = GUILayout.Toggle(AlsoSearchLobbiesByName, "In the multiplayer join menu, search by server name as well as reporting mark");
 		}
 
 		public override void Save(UnityModManager.ModEntry modEntry)

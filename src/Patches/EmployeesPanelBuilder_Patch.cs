@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using Game;
 using Game.AccessControl;
 using Game.Messages;
-using Game.Persistence;
 using Game.State;
 using HarmonyLib;
+using Serilog;
 using Steamworks;
 using UI.Builder;
 using UI.CompanyWindow;
-using UnityEngine;
 
 namespace better_ui_mod.Patches;
 
@@ -32,7 +29,6 @@ public class EmployeesPanelBuilder_Patch
       return Stuff.EXECUTE_ORIGINAL;
     }
     
-    var playerId1 = PlayersManager.PlayerId;
     var first = new List<UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>>();
     var second1 = new List<UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>>();
     var second2 = new List<UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>>();
@@ -62,7 +58,7 @@ public class EmployeesPanelBuilder_Patch
     second1.Sort();
     second2.Sort();
     var list = first.Concat(second1).Concat(second2).ToList();
-    builder.AddListDetail<EmployeesPanelBuilder.RecordsPanelItem>((IEnumerable<UIPanelBuilder.ListItem<EmployeesPanelBuilder.RecordsPanelItem>>) list, selectedPlayerId, (Action<UIPanelBuilder, EmployeesPanelBuilder.RecordsPanelItem>) ((builder5, item) =>
+    builder.AddListDetail(list, selectedPlayerId, (builder5, item) =>
     {
       if (item == null)
       {
@@ -102,7 +98,7 @@ public class EmployeesPanelBuilder_Patch
             var control = builder7.AddDropdown(accessLevelStrings.ToList(), index, newIndex =>
             {
               var accessLevel = accessLevelOptions[newIndex];
-              Serilog.Log.Debug<string, AccessLevel>("Request Set Access Level: {recordKey} {newAccessLevel}", item.RecordKey, accessLevel);
+              Log.Debug("Request Set Access Level: {recordKey} {newAccessLevel}", item.RecordKey, accessLevel);
               StateManager.ApplyLocal(new RequestSetAccessLevel(item.RecordKey, accessLevel));
               LeanTween.delayedCall(1f, builder7.Rebuild);
             });
@@ -124,7 +120,7 @@ public class EmployeesPanelBuilder_Patch
           });
         });
       }
-    }));
+    });
 
 
     return Stuff.SKIP_ORIGINAL;
