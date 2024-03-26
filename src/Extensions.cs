@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using HeathenEngineering.SteamworksIntegration;
 using Model.OpsNew;
+using Network.Steam;
 
 namespace better_ui_mod;
 
@@ -16,5 +18,10 @@ public static class Extensions
 		}
 
 		return capacities;
+	}
+
+	public static bool IsPasswordProtected(this Lobby lobby)
+	{
+		return lobby[LobbyKeys.Passworded] == "1";
 	}
 }

@@ -1,5 +1,8 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
+using HeathenEngineering.SteamworksIntegration;
 using UI.Menu;
 
 namespace better_ui_mod.Patches;
@@ -18,9 +21,13 @@ public static class MultiplayerJoinMenu_Rebuild_Patch
 			return;
 		}
 		
+		// should we filter with Network.Steam.LobbyKeys.Name in ClientLobbyHelper_FetchLobbies_Patch?
 		var filterText = __instance.filterField.text;
 		__instance._lobbies = __instance._lobbies
-			.Where(lobby => lobby.Name.ToLower().Contains(filterText.ToLower()))
+			.Where(lobby => 
+				lobby.Name.ToLower().Contains(filterText.ToLower())
+				&& (!Main.MySettings.HidePasswordProtectedLobbies || !lobby.IsPasswordProtected())
+				)
 			.ToList();
 	}
 }
