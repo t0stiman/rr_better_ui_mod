@@ -20,7 +20,7 @@ public static class MultiplayerJoinMenu_Rebuild_Patch
 		
 		var filterText = __instance.filterField.text;
 		__instance._lobbies = __instance._lobbies
-			.Where(lobby => lobby.Name.Contains(filterText))
+			.Where(lobby => lobby.Name.ToLower().Contains(filterText.ToLower()))
 			.ToList();
 	}
 }
