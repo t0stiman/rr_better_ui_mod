@@ -5,8 +5,6 @@ namespace better_ui_mod
 {
 	public class Settings : UnityModManager.ModSettings
 	{
-		public bool ShowReverserPercentage = true;
-		public bool ShowThrottleNotchInsteadOfPercentage = true;
 		public bool ShowComsumablesPercent = true;
 		public bool ShowSteamProfileButton = true;
 		public bool AlsoSearchLobbiesByName = true;
@@ -24,14 +22,6 @@ namespace better_ui_mod
 			HidePasswordProtectedLobbies = GUILayout.Toggle(HidePasswordProtectedLobbies,
 				"Hide password-protected lobbies");
 			// ShowMaxPlayers = GUILayout.Toggle(ShowMaxPlayers, "Show maximum amount of players"); //TODO
-			
-			GUILayout.Space(10);
-			GUILayout.Label("Controls");
-			GUILayout.Space(10);
-			
-			ShowReverserPercentage = GUILayout.Toggle(ShowReverserPercentage, "Show reverser percentage instead of R/N/F on steam locomotives");
-			ShowThrottleNotchInsteadOfPercentage = GUILayout.Toggle(ShowThrottleNotchInsteadOfPercentage,
-				"Show the selected throttle notch instead of the throttle percentage");
 			
 			GUILayout.Space(10);
 			GUILayout.Label("Misc.");

@@ -24,7 +24,7 @@ public class CarPickable_Patch
 
 		for (var loadSlotNr = 0; loadSlotNr < __instance.car.Definition.LoadSlots.Count; loadSlotNr++)
 		{
-			var loadSlot = __instance.car.Definition.LoadSlots[loadSlotNr];
+			LoadSlot loadSlot = __instance.car.Definition.LoadSlots[loadSlotNr];
 			var loadInfo = __instance.car.GetLoadInfo(loadSlotNr);
 			if (!loadInfo.HasValue)
 			{
