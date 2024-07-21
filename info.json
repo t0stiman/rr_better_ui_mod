@@ -1,10 +1,10 @@
 {
 	"Id": "better_ui_mod",
-	"Version": "0.0.3",
+	"Version": "0.0.4",
 	"DisplayName": "Better UI mod",
 	"Author": "Tostiman",
 	"EntryMethod": "better_ui_mod.Main.Load",
 	"AssemblyName": "better_ui_mod.dll",
-	"HomePage": "https://github.com/t0stiman/rr_better_ui_mod",
+	"HomePage": "https://www.nexusmods.com/railroader/mods/21",
 	"Repository": "https://raw.githubusercontent.com/t0stiman/rr_better_ui_mod/master/repository.json"
 }

@@ -2,6 +2,11 @@
     "Releases": [
         {
             "Id": "better_ui_mod",
+            "Version": "0.0.4",
+            "DownloadUrl": "https://github.com/t0stiman/rr_better_ui_mod/releases/download/v0.0.4/better_ui_mod.zip"
+        },
+        {
+            "Id": "better_ui_mod",
             "Version": "0.0.3",
             "DownloadUrl": "https://github.com/t0stiman/rr_better_ui_mod/releases/download/v0.0.3/better_ui_mod.zip"
         },
