@@ -5,9 +5,10 @@ All of these tweaks can be toggled from the mod settings menu (ctrl-F10).
 
 ## Features
 
-- Show reverser percentage instead of R/N/F
 - Show fill percentage on cargo wagons, tenders, diesel locomotives, coaling towers and diesel fuel stands
 - Show a button in the 'Employees' menu that takes you to the steam profile of the selected player
+- Find multiplayer sessions by name as well as by reporting mark
+- Optionally hide password-protected lobbies
 
 ## How to install
 
@@ -19,7 +20,5 @@ All of these tweaks can be toggled from the mod settings menu (ctrl-F10).
 If you like my mods, please consider [buying me a coffee](https://ko-fi.com/tostiman). Thanks!
 
 ## Screenshots
-
-![reverser](screenshots/reverser.jpg)
 
 ![consumables](screenshots/consumables.jpg)
