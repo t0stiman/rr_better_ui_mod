@@ -10,6 +10,7 @@ namespace better_ui_mod
 		public bool AlsoSearchLobbiesByName = true;
 		public bool HidePasswordProtectedLobbies = false;
 		// public bool ShowMaxPlayers = true;
+		public bool NeutralTweak = true;
 
 		public void Setup(){}
 		
@@ -30,6 +31,8 @@ namespace better_ui_mod
 			ShowComsumablesPercent = GUILayout.Toggle(ShowComsumablesPercent, "Show fill percentage on cargo wagons, tenders, diesel locomotives, coaling towers and diesel fuel stands");
 			ShowSteamProfileButton = GUILayout.Toggle(ShowSteamProfileButton,
 				"Show a button in the 'Employees' menu that takes you to the steam profile of the selected player");
+			NeutralTweak = GUILayout.Toggle(NeutralTweak,
+				"Setting the reverser to 10% will sometimes make the control window show 'N', and sometimes 10. This tweak makes it consistently show N.");
 		}
 
 		public override void Save(UnityModManager.ModEntry modEntry)

@@ -9,6 +9,7 @@ All of these tweaks can be toggled from the mod settings menu (ctrl-F10).
 - Show a button in the 'Employees' menu that takes you to the steam profile of the selected player
 - Find multiplayer sessions by name as well as by reporting mark
 - Optionally hide password-protected lobbies
+- Setting the reverser to 10% will sometimes make the control window show 'N', and sometimes 10. This tweak makes it consistently show N.
 
 ## How to install
 
