@@ -17,14 +17,14 @@ namespace better_ui_mod.Patches;
 [HarmonyPatch(nameof(ClientLobbyHelper.FetchLobbies))]
 public static class ClientLobbyHelper_FetchLobbies_Patch
 {
-	private static bool Prefix(ref ClientLobbyHelper __instance, ref Task<Lobby[]> __result, string reportingMark)
+	private static bool Prefix(ref ClientLobbyHelper __instance, ref Task<LobbyData[]> __result, string reportingMark)
 	{
 		if (!Main.MySettings.AlsoSearchLobbiesByName)
 		{
 			return Stuff.EXECUTE_ORIGINAL;
 		}
 
-		var tcs = new TaskCompletionSource<Lobby[]>();
+		var tcs = new TaskCompletionSource<LobbyData[]>();
 		Matchmaking.Client.AddRequestLobbyListStringFilter("ver", Application.version,
 			ELobbyComparison.k_ELobbyComparisonEqual);
 		Matchmaking.Client.AddRequestLobbyListStringFilter("status", "open", ELobbyComparison.k_ELobbyComparisonEqual);
@@ -42,20 +42,20 @@ public static class ClientLobbyHelper_FetchLobbies_Patch
 
 	private class idfk
 	{
-		public idfk(ClientLobbyHelper clientLobbyHelper, TaskCompletionSource<Lobby[]> tcs)
+		public idfk(ClientLobbyHelper clientLobbyHelper, TaskCompletionSource<LobbyData[]> tcs)
 		{
 			_clientLobbyHelper = clientLobbyHelper;
 			this.tcs = tcs;
 		}
 
 		private ClientLobbyHelper _clientLobbyHelper;
-		public TaskCompletionSource<Lobby[]> tcs;
+		public TaskCompletionSource<LobbyData[]> tcs;
 
-		public void Callback(Lobby[] lobbies, bool error)
+		public void Callback(LobbyData[] lobbies, bool error)
 		{
 			if (error)
 			{
-				_clientLobbyHelper._lobbies = Array.Empty<Lobby>();
+				_clientLobbyHelper._lobbies = Array.Empty<LobbyData>();
 				Debug.LogError("Error fetching lobbies");
 				tcs.SetException(new Exception("Error fetching lobbies"));
 			}

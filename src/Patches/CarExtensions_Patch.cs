@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
 using Model.Definition.Data;
 using Model.Ops.Definition;
-using Model.OpsNew;
+using Model.Ops;
 using UnityEngine;
 
 namespace better_ui_mod.Patches;
