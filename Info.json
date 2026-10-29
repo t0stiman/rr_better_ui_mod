@@ -1,0 +1,13 @@
+{
+	"identifier": "com.tostiman/betteruimod",
+	"name": "Better UI mod",
+	"author": "Tostiman",
+	"version": "1.0.0",
+	"license": "MIT",
+	"assemblies": ["better_ui_mod.dll"],
+	"dependencies": {
+		"required": [ "rr/game >=0.6.1" ]
+	},
+	"url": "https://nexusmods.com/railroader/mods/21",
+	"scope": "optional"
+}

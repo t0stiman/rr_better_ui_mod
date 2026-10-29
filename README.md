@@ -7,14 +7,13 @@ All of these tweaks can be toggled from the mod settings menu (ctrl-F10).
 
 - Show fill percentage on cargo wagons, tenders, diesel locomotives, coaling towers and diesel fuel stands
 - Show a button in the 'Employees' menu that takes you to the steam profile of the selected player
-- Find multiplayer sessions by name as well as by reporting mark
+- Find multiplayer sessions by name instead of reporting mark
 - Optionally hide password-protected lobbies
-- Setting the reverser to 10% will sometimes make the control window show 'N', and sometimes 10. This tweak makes it consistently show N.
+- Setting the reverser to -10% will sometimes make the control window show 'N', and sometimes -10. This tweak makes it consistently show -10.
 
 ## How to install
 
-1. install Unity Mod Manager(UMM) and configure it for Railroader
-2. download this mods zip and yeet it into UMM
+TODO
 
 ## Support me
 

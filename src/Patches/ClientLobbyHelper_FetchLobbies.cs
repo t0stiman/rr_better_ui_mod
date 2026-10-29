@@ -13,13 +13,12 @@ namespace better_ui_mod.Patches;
 /// <summary>
 /// Only difference with the base method is we don't filter any lobbies (we do that in MultiplayerJoinMenu_Rebuild_Patch)
 /// </summary>
-[HarmonyPatch(typeof(ClientLobbyHelper))]
-[HarmonyPatch(nameof(ClientLobbyHelper.FetchLobbies))]
+[HarmonyPatch(typeof(ClientLobbyHelper), nameof(ClientLobbyHelper.FetchLobbies))]
 public static class ClientLobbyHelper_FetchLobbies_Patch
 {
-	private static bool Prefix(ref ClientLobbyHelper __instance, ref Task<LobbyData[]> __result, string reportingMark)
+	private static bool Prefix(ClientLobbyHelper __instance, ref Task<LobbyData[]> __result)
 	{
-		if (!Main.MySettings.AlsoSearchLobbiesByName)
+		if (!ModEntryPoint.MySettings!.AlsoSearchLobbiesByName)
 		{
 			return Stuff.EXECUTE_ORIGINAL;
 		}
@@ -29,14 +28,11 @@ public static class ClientLobbyHelper_FetchLobbies_Patch
 			ELobbyComparison.k_ELobbyComparisonEqual);
 		Matchmaking.Client.AddRequestLobbyListStringFilter("status", "open", ELobbyComparison.k_ELobbyComparisonEqual);
 		Matchmaking.Client.AddRequestLobbyListDistanceFilter(ELobbyDistanceFilter.k_ELobbyDistanceFilterWorldwide);
-		// if (!string.IsNullOrEmpty(reportingMark))
-		// 	Matchmaking.Client.AddRequestLobbyListStringFilter("rpmk", ServerLobbyHelper.SanitizeReportingMark(reportingMark), ELobbyComparison.k_ELobbyComparisonEqual);
 
 		var aaa = new idfk(__instance, tcs);
 		Matchmaking.Client.RequestLobbyList(aaa.Callback);
 
 		__result = aaa.tcs.Task;
-
 		return Stuff.SKIP_ORIGINAL;
 	}
 
@@ -48,8 +44,8 @@ public static class ClientLobbyHelper_FetchLobbies_Patch
 			this.tcs = tcs;
 		}
 
-		private ClientLobbyHelper _clientLobbyHelper;
-		public TaskCompletionSource<LobbyData[]> tcs;
+		private readonly ClientLobbyHelper _clientLobbyHelper;
+		public readonly TaskCompletionSource<LobbyData[]> tcs;
 
 		public void Callback(LobbyData[] lobbies, bool error)
 		{
