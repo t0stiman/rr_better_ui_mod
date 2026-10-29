@@ -1,11 +1,11 @@
 <Project>
-<PropertyGroup>
-    <RrInstallDir>/mnt/Data/SteamLibrary/steamapps/common/Railroader</RrInstallDir>
-    <ReferencePath>$(RrInstallDir)/Railroader_Data/Managed/;</ReferencePath>
-    <AssemblySearchPaths>$(AssemblySearchPaths);$(ReferencePath);</AssemblySearchPaths>
-</PropertyGroup>
+	<PropertyGroup>
+		<RrInstallDir>/mnt/Data/SteamLibrary/steamapps/common/Railroader</RrInstallDir>
+		<ReferencePath>$(RrInstallDir)/Railroader_Data/Managed/;</ReferencePath>
+		<AssemblySearchPaths>$(AssemblySearchPaths);$(ReferencePath);</AssemblySearchPaths>
+	</PropertyGroup>
 
-<Target Name="PostBuild" AfterTargets="PostBuildEvent">
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent">
 		<!-- Copy to mods folder -->
 		<Copy SourceFiles="
             $(TargetPath);
@@ -13,6 +13,6 @@
             README.md;
             Info.json;
             LICENSE"
-			  DestinationFolder="$(HOME)/Documents/Railroader/ModDev/better_ui_mod" />
-</Target>
+			DestinationFolder="$(HOME)/Documents/Railroader/ModDev/better_ui_mod" />
+	</Target>
 </Project>
