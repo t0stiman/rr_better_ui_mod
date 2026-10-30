@@ -9,7 +9,7 @@ public class Settings
 	public bool ShowComsumablesPercent = true;
 	public bool ShowSteamProfileButton = true;
 	public bool AlsoSearchLobbiesByName = true;
-	public bool HidePasswordProtectedLobbies = true; //todo false default
+	public bool HidePasswordProtectedLobbies = false;
 	// public bool ShowMaxPlayers = true;
 	public bool NeutralTweak = true;
 	

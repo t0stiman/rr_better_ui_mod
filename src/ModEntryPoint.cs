@@ -8,34 +8,34 @@ namespace better_ui_mod;
 public sealed class ModEntryPoint : IModEntryPoint
 {
 	private Harmony? harmony;
-	private static IModContext? context; 
+	public static IModContext? Context { get; private set; } 
 	public static Settings? MySettings { get; private set; }
 	
-	public void OnModLoad(IModContext context_)
+	public void OnModLoad(IModContext context)
 	{
-		context = context_;
+		Context = context;
 		
 		MySettings = new Settings();
 		
 		try
 		{
-			harmony = new Harmony(context_.ModIdentifier);
+			harmony = new Harmony(context.ModIdentifier);
 			harmony.PatchAll(Assembly.GetExecutingAssembly());
 		}
 		catch (Exception ex)
 		{
-			context_.Log.Error($"Failed to load {context_.ModIdentifier}: {ex}");
-			harmony?.UnpatchAll(context_.ModIdentifier);
+			context.Log.Error($"Failed to load {context.ModIdentifier}: {ex}");
+			harmony?.UnpatchAll(context.ModIdentifier);
 			throw;
 		}
 
-		context.Log.Info($"Loaded from {context.ModDirectory}"); 
+		Context.Log.Info($"Loaded from {Context.ModDirectory}"); 
 	}
 	
 	public void OnModUnload()
 	{
-		harmony?.UnpatchAll(context!.ModIdentifier);
-		context?.Log.Info("Unloaded mod");
+		harmony?.UnpatchAll(Context!.ModIdentifier);
+		Context?.Log.Info("Unloaded mod");
 	}
 
 	// Logger Commands
@@ -43,29 +43,29 @@ public sealed class ModEntryPoint : IModEntryPoint
 	{
 		if (MySettings!.LogToConsole)
 		{
-			Console.Log($"{context!.ModIdentifier}[INFO]{message}");
+			Console.Log($"{Context!.ModIdentifier}[INFO]{message}");
 		}
 
-		context!.Log.Info(message);
+		Context!.Log.Info(message);
 	}
 
 	public static void Warning(string message)
 	{
 		if (MySettings!.LogToConsole)
 		{
-			Console.Log($"{context!.ModIdentifier}[WARNING]{message}");
+			Console.Log($"{Context!.ModIdentifier}[WARNING]{message}");
 		}
 
-		context!.Log.Warning(message);
+		Context!.Log.Warning(message);
 	}
 
 	public static void Error(string message)
 	{
 		if (MySettings!.LogToConsole)
 		{
-			Console.Log($"{context!.ModIdentifier}[ERROR]{message}");
+			Console.Log($"{Context!.ModIdentifier}[ERROR]{message}");
 		}
 
-		context!.Log.Error(message);
+		Context!.Log.Error(message);
 	}
 }
