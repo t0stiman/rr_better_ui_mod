@@ -20,8 +20,9 @@ public static class Extensions
 		return capacities;
 	}
 
-	public static bool IsPasswordProtected(this LobbyData lobby)
-	{
-		return lobby[LobbyKeys.Passworded] == "1";
-	}
+	//todo
+	// public static bool IsPasswordProtected(this LobbyData lobby)
+	// {
+	// 	return lobby[LobbyKeys.Passworded] == "1";
+	// }
 }

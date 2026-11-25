@@ -10,57 +10,59 @@ using UnityEngine;
 
 namespace better_ui_mod.Patches;
 
+//todo
+
 /// <summary>
 /// Only difference with the base method is we don't filter any lobbies (we do that in MultiplayerJoinMenu_Rebuild_Patch)
 /// </summary>
-[HarmonyPatch(typeof(ClientLobbyHelper), nameof(ClientLobbyHelper.FetchLobbies))]
-public static class ClientLobbyHelper_FetchLobbies_Patch
-{
-	private static bool Prefix(ClientLobbyHelper __instance, ref Task<LobbyData[]> __result)
-	{
-		if (!ModEntryPoint.MySettings!.AlsoSearchLobbiesByName)
-		{
-			return Stuff.EXECUTE_ORIGINAL;
-		}
-
-		var tcs = new TaskCompletionSource<LobbyData[]>();
-		Matchmaking.Client.AddRequestLobbyListStringFilter("ver", Application.version,
-			ELobbyComparison.k_ELobbyComparisonEqual);
-		Matchmaking.Client.AddRequestLobbyListStringFilter("status", "open", ELobbyComparison.k_ELobbyComparisonEqual);
-		Matchmaking.Client.AddRequestLobbyListDistanceFilter(ELobbyDistanceFilter.k_ELobbyDistanceFilterWorldwide);
-
-		var aaa = new idfk(__instance, tcs);
-		Matchmaking.Client.RequestLobbyList(aaa.Callback);
-
-		__result = aaa.tcs.Task;
-		return Stuff.SKIP_ORIGINAL;
-	}
-
-	private class idfk
-	{
-		public idfk(ClientLobbyHelper clientLobbyHelper, TaskCompletionSource<LobbyData[]> tcs)
-		{
-			_clientLobbyHelper = clientLobbyHelper;
-			this.tcs = tcs;
-		}
-
-		private readonly ClientLobbyHelper _clientLobbyHelper;
-		public readonly TaskCompletionSource<LobbyData[]> tcs;
-
-		public void Callback(LobbyData[] lobbies, bool error)
-		{
-			if (error)
-			{
-				_clientLobbyHelper._lobbies = Array.Empty<LobbyData>();
-				Debug.LogError("Error fetching lobbies");
-				tcs.SetException(new Exception("Error fetching lobbies"));
-			}
-			else
-			{
-				Debug.Log($"Received {lobbies.Length} lobbies: {string.Join(", ", lobbies.Select(l => l.Name))}");
-				_clientLobbyHelper._lobbies = lobbies;
-				tcs.SetResult(lobbies);
-			}
-		}
-	}
-}
+// [HarmonyPatch(typeof(ClientLobbyHelper), nameof(ClientLobbyHelper.FetchLobbies))]
+// public static class ClientLobbyHelper_FetchLobbies_Patch
+// {
+// 	private static bool Prefix(ClientLobbyHelper __instance, ref Task<LobbyData[]> __result)
+// 	{
+// 		if (!ModEntryPoint.MySettings!.AlsoSearchLobbiesByName)
+// 		{
+// 			return Stuff.EXECUTE_ORIGINAL;
+// 		}
+//
+// 		var tcs = new TaskCompletionSource<LobbyData[]>();
+// 		Matchmaking.Client.AddRequestLobbyListStringFilter("ver", Application.version,
+// 			ELobbyComparison.k_ELobbyComparisonEqual);
+// 		Matchmaking.Client.AddRequestLobbyListStringFilter("status", "open", ELobbyComparison.k_ELobbyComparisonEqual);
+// 		Matchmaking.Client.AddRequestLobbyListDistanceFilter(ELobbyDistanceFilter.k_ELobbyDistanceFilterWorldwide);
+//
+// 		var aaa = new idfk(__instance, tcs);
+// 		Matchmaking.Client.RequestLobbyList(aaa.Callback);
+//
+// 		__result = aaa.tcs.Task;
+// 		return Stuff.SKIP_ORIGINAL;
+// 	}
+//
+// 	private class idfk
+// 	{
+// 		public idfk(ClientLobbyHelper clientLobbyHelper, TaskCompletionSource<LobbyData[]> tcs)
+// 		{
+// 			_clientLobbyHelper = clientLobbyHelper;
+// 			this.tcs = tcs;
+// 		}
+//
+// 		private readonly ClientLobbyHelper _clientLobbyHelper;
+// 		public readonly TaskCompletionSource<LobbyData[]> tcs;
+//
+// 		public void Callback(LobbyData[] lobbies, bool error)
+// 		{
+// 			if (error)
+// 			{
+// 				_clientLobbyHelper._lobbies = Array.Empty<LobbyData>();
+// 				Debug.LogError("Error fetching lobbies");
+// 				tcs.SetException(new Exception("Error fetching lobbies"));
+// 			}
+// 			else
+// 			{
+// 				Debug.Log($"Received {lobbies.Length} lobbies: {string.Join(", ", lobbies.Select(l => l.Name))}");
+// 				_clientLobbyHelper._lobbies = lobbies;
+// 				tcs.SetResult(lobbies);
+// 			}
+// 		}
+// 	}
+// }
