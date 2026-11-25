@@ -13,12 +13,17 @@ All of these tweaks can be toggled from the mod settings menu (ctrl-F10).
 
 ## How to install
 
-TODO
+1. Download this mods zip and extract it into Documents/Railroader/Mods
+2. In RailRoader, enable Preferences → Features → Experimental → Allow Unsafe DLL Mods
+3. Restart the game
+4. Main menu → Mods → checkbox on this mod
 
 ## Support me
 
 If you like my mods, please consider [buying me a coffee](https://ko-fi.com/tostiman). Thanks!
 
 ## Screenshots
+
+TODO screenshot outdated?
 
 ![consumables](screenshots/consumables.jpg)
