@@ -4,5 +4,5 @@ obj
 build/
 dist/
 packages
-Directory.Build.targets
+/Directory.Build.targets
 Folder.DotSettings.user

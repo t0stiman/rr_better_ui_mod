@@ -1,7 +1,7 @@
 ﻿using HarmonyLib;
-using Model;
 using Model.Definition.Data;
 using Model.Ops;
+using Model.Ops.Definition;
 using RollingStock;
 using UnityEngine;
 
@@ -11,13 +11,12 @@ namespace better_ui_mod.Patches;
 /// Show fill percentage and capacity on tenders, freight wagons and diesel locomotives
 /// Contains contributions by Kakashi Hatake and Percival Binglebottom
 /// </summary>
-[HarmonyPatch(typeof(CarPickable))]
-[HarmonyPatch(nameof(CarPickable.TooltipText))]
-public class CarPickable_Patch
+[HarmonyPatch(typeof(CarPickable), nameof(CarPickable.TooltipText))]
+public class CarPickable_TooltipText_Patch
 {
 	private static void Postfix(ref string __result, CarPickable __instance)
 	{
-		if (!Main.MySettings.ShowComsumablesPercent)
+		if (!ModEntryPoint.MySettings!.ShowComsumablesPercent)
 		{
 			return;
 		}
@@ -30,22 +29,18 @@ public class CarPickable_Patch
 			{
 				continue;
 			}
-
-			var load = CarPrototypeLibrary.instance.LoadForId(loadInfo.Value.LoadId);
-			var unit = Stuff.UnitToText(load.units);
+			
+			Load load = CarLoadLibrary.GetLoad(loadInfo.Value.LoadId);
+			string unitText = Stuff.UnitToText(load.units);
 			
 			var capacityText = Stuff.GetCapacityText(load.units, loadSlot.MaximumCapacity);
 			var quantity = loadInfo.Value.Quantity;
 			var fillPercentage = Mathf.RoundToInt(quantity / loadSlot.MaximumCapacity * 100);
 			
 			// max capacity is shown when car isn't empty or full
-			var thingy = fillPercentage != 0 && fillPercentage != 100 ? $" / {capacityText}" : "";
-
-			__result = __result.Replace($" {unit} {load.description}", $"{thingy} {unit} {load.description} ({fillPercentage}%)");
+			var maxCapacityText = fillPercentage != 0 && fillPercentage != 100 ? $" / {capacityText}" : "";
+			
+			__result = __result.Replace($" {unitText} {load.description}", $"{maxCapacityText} {unitText} {load.description} ({fillPercentage}%)");
 		}
-
-		// each unit on a new line
-		__result = __result.Replace(" - ", "\n");
-		__result = __result.Replace(", ", "\n");
 	}
 }

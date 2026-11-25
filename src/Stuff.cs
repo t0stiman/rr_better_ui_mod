@@ -24,25 +24,25 @@ public static class Stuff
 			case LoadUnits.Quantity:
 				return "";
 			default:
-				Main.Warning($"{nameof(UnitToText)}: unit not implemented: {loadUnits.ToString()}");
+				ModEntryPoint.Warning($"{nameof(UnitToText)}: unit not implemented: {loadUnits.ToString()}");
 				return "";
 		}
 	}
 	
 	public static string GetCapacityText(LoadUnits units, float capacity)
 	{
-		string capacityText = default;
+		string capacityText = string.Empty;
 		switch (units)
 		{
 			case LoadUnits.Pounds:
-				capacityText = Stuff.PoundsToUSShortTons(capacity).ToString("0.0");
+				capacityText = PoundsToUSShortTons(capacity).ToString("0.0");
 				break;
 			case LoadUnits.Gallons:
 			case LoadUnits.Quantity:
 				capacityText = Mathf.RoundToInt(capacity).ToString();
 				break;
 			default:
-				Main.Error($"{nameof(GetCapacityText)}: unreachable code reached");
+				ModEntryPoint.Error($"{nameof(GetCapacityText)}: unreachable code reached");
 				break;
 		}
 

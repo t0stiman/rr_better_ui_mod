@@ -5,15 +5,14 @@ using UnityEngine;
 namespace better_ui_mod.Patches;
 
 /// <summary>
-/// percentage on coaling towers and diesel refueling stands
+/// show percentage on coaling towers and diesel refueling stands
 /// </summary>
-[HarmonyPatch(typeof(IndustryContentHoverable))]
-[HarmonyPatch(nameof(IndustryContentHoverable.TooltipText))]
-public class IndustryContentHoverable_Patch
+[HarmonyPatch(typeof(IndustryContentHoverable), nameof(IndustryContentHoverable.TooltipText))]
+public class IndustryContentHoverable_TooltipText_Patch
 {
 	private static void Postfix(ref string __result, IndustryContentHoverable __instance)
 	{
-		if (!Main.MySettings.ShowComsumablesPercent)
+		if (!ModEntryPoint.MySettings!.ShowComsumablesPercent)
 		{
 			return;
 		}
@@ -28,7 +27,7 @@ public class IndustryContentHoverable_Patch
 			var gotCapacity = capacities.TryGetValue(load.id, out float capacity);
 			if (!gotCapacity)
 			{
-				Main.Error($"{nameof(IndustryContentHoverable_Patch)}: can't get capacity for id {load.id}");
+				ModEntryPoint.Error($"{nameof(IndustryContentHoverable_TooltipText_Patch)}: can't get capacity for id {load.id}");
 				continue;
 			}
 			
